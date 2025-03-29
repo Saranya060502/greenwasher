@@ -1,17 +1,12 @@
 
-from Flask import Flask, request, jsonify
+from flask import Flask, request, jsonify
 import os
 from openai import OpenAI
 import requests, justext
 
-token = os.environ["GITHUB_TOKEN"]
-endpoint = "https://models.inference.ai.azure.com"
-model_name = "gpt-4o-mini"
+YOUR_API_KEY = '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'
 
-client = OpenAI(
-    base_url=endpoint,
-    api_key=token,
-)
+client = OpenAI(api_key=YOUR_API_KEY, base_url="https://api.perplexity.ai")
 
 app = Flask(__name__)
 
@@ -26,30 +21,66 @@ def extract_carbon_claims(url):
             policy_text += paragraph.text + "\n"
     return policy_text
 
-@app.route('/analyze', methods=['GET'])
+@app.route('/analyze', methods=['POST'])
 def analyze():
     policy_text = extract_carbon_claims(AMAZON_URL)
     if not policy_text:
         return jsonify({"error": "Failed to extract claims from the website."}), 400
 
     messages = [
-        {"role": "user", "content": policy_text},
-        {"role": "user", "content": "Analyze the carbon energy claims in the text and determine the percentage of truth and lies. Provide only numerical values in the response as 'truth': X and 'lie': Y."},
+        {
+            "role": "system",
+            "content": (
+                "You are an artificial intelligence assistant and you need to "
+                "engage in a helpful, detailed, polite conversation with a user."
+            ),
+        },
+        {   
+            "role": "user",
+            "content": (
+                "How many stars are in the universe?"
+            ),
+        },
     ]
     
+    # chat completion without streaming
     response = client.chat.completions.create(
+        model="sonar-pro",
         messages=messages,
-        model=model_name,
     )
+    print(response)
+
+    # chat completion with streaming
+    response_stream = client.chat.completions.create(
+        model="sonar-pro",
+        messages=messages,
+        stream=True,
+    )
+
+    for response in response_stream:
+        print(response)
     
-    result = response.choices[0].message.content.strip()
-    try:
-        truth_percentage = int(result.split('truth')[1].split(':')[1].split()[0])
-        lie_percentage = int(result.split('lie')[1].split(':')[1].split()[0])
-    except:
-        return jsonify({"error": "Invalid response format from AI."}), 500
+    # result = response.choices[0].message.content.strip()
+    # try:
+    #     truth_percentage = int(result.split('truth')[1].split(':')[1].split()[0])
+    #     lie_percentage = int(result.split('lie')[1].split(':')[1].split()[0])
+    # except:
+    #     return jsonify({"error": "Invalid response format from AI."}), 500
     
-    return jsonify({"truth": truth_percentage, "lie": lie_percentage})
+    return jsonify({"truth": 'pass', "lie": 'pass'})
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+
+
+
+
+
+
+
+
+
+
+
+
