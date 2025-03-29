@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Greenwash Detection</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .container {
+            text-align: center;
+            margin: 20px;
+        }
+        .bar-container {
+            width: 100%;
+            background-color: #ddd;
+            border-radius: 5px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+        .truth-bar {
+            height: 20px;
+            background-color: green;
+            text-align: center;
+            color: white;
+            line-height: 20px;
+        }
+        .lie-bar {
+            height: 20px;
+            background-color: red;
+            text-align: center;
+            color: white;
+            line-height: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h3>Greenwash Detection</h3>
+        <p id="chatGptRes">Analyzing...</p>
+        <div class="bar-container">
+            <div id="truth-bar" class="truth-bar" style="width: 50%;">50% Truth</div>
+        </div>
+        <div class="bar-container">
+            <div id="lie-bar" class="lie-bar" style="width: 50%;">50% Lie</div>
+        </div>
+        <button id="scrape-btn">Analyze Sustainability Claims</button>
+    </div>
+    <script src="popup.js"></script>
+</body>
+</html>
