@@ -38,27 +38,25 @@ def analyze():
         {   
             "role": "user",
             "content": (
-                "How many stars are in the universe?"
+                "Analyze the sustaininbilty part of the Amazon website. "
             ),
         },
     ]
     
     # chat completion without streaming
     response = client.chat.completions.create(
-        model="sonar-pro",
+        model="sonar",
         messages=messages,
     )
-    print(response)
 
     # chat completion with streaming
     response_stream = client.chat.completions.create(
-        model="sonar-pro",
+        model="sonar",
         messages=messages,
         stream=True,
     )
 
-    for response in response_stream:
-        print(response)
+    print(response.choices[0].message.content)
     
     # result = response.choices[0].message.content.strip()
     # try:
