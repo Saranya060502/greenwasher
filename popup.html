@@ -1,17 +1,34 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Amazon Sustainability Claim Analyzer</title>
+  <title>ESG Rating Analysis</title>
   <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
   <div class="container">
-    <h1>Amazon Sustainability Claim Analyzer</h1>
+    <h1>ESG Rating Analysis</h1>
     <button id="analyzeBtn">Analyze This Page</button>
     <div id="loadingIndicator" class="hidden">Analyzing claims...</div>
     <div id="results" class="hidden">
       <h2>Analysis Results</h2>
-      <div id="analysisContent"></div>
+      <div class="score-circle">
+        <span class="score-value">0</span>
+      </div>
+      
+      <div class="ratings-container">
+        <h3>ESG Ratings</h3>
+        <div id="ratingsContent"></div>
+      </div>
+
+      <div class="false-claims" id="falseClaimsContent">
+        <h3>False Claims Detected</h3>
+        <p></p>
+      </div>
+
+      <div class="references">
+        <h3>References</h3>
+        <ul id="referencesContent"></ul>
+      </div>
     </div>
   </div>
   <script src="popup.js"></script>

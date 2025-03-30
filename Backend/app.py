@@ -2,14 +2,14 @@ from flask import Flask, request, jsonify
 import os
 from openai import OpenAI
 import requests, justext
-#from flask_cors import CORS
+from flask_cors import CORS
 
 YOUR_API_KEY = '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'
 
 client = OpenAI(api_key=YOUR_API_KEY, base_url="https://api.perplexity.ai")
 
 app = Flask(__name__)
-#CORS(app)  # Enable CORS for all routes
+CORS(app)  # Enable CORS for all routes
 
 def extract_carbon_claims(url):
     response = requests.get(url)
@@ -184,12 +184,29 @@ def analyze_sustainability():
         
     )
     
-    extracted_claims = claims_response.choices[0].message.content
-    print(extracted_claims)
+    import re
+    import json
+
+    def extract_json_from_text(text):
+        try:
+            # Find the first occurrence of a JSON-like structure
+            match = re.search(r'\{[\s\S]*"cumulative_score"[\s\S]*"ratings"[\s\S]*"false_claims"[\s\S]*"references"[\s\S]*\}', text)
+            if match:
+                json_str = match.group(0)
+                # Parse to validate it's proper JSON
+                return json.loads(json_str)
+            return None
+        except (json.JSONDecodeError, AttributeError):
+            return None
+
+    response_text = claims_response.choices[0].message.content
     
-    
-    
-    return jsonify(extracted_claims)
+    parsed_claims = extract_json_from_text(response_text)
+    print("Parsed claims:", parsed_claims)
+    if parsed_claims:
+        return jsonify(parsed_claims)
+    else:
+        return jsonify({"error": "Failed to extract valid JSON from response"}), 500
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=8000)
