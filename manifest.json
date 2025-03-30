@@ -1,11 +1,14 @@
 {
-    "name": "My Chrome Extension",
-    "version": "1.0.0",
-    "description": "Best extension in the world",
     "manifest_version": 3,
-    "author": "Saranya",
+    "name": "Amazon Sustainability Claim Analyzer",
+    "version": "1.0",
+    "description": "Analyze sustainability claims on Amazon's website",
+    "permissions": ["activeTab"],
+    "host_permissions": [
+      "http://localhost:8000/*"
+    ],
     "action": {
-        "default_popup": "popup.html",
-        "default_title": "greenwash detection"
+      "default_popup": "popup.html"
+      }
     }
-}
+  

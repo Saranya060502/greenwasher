@@ -1,30 +1,40 @@
-document.getElementById("scrape-btn").addEventListener("click", async () => {
-    // Execute content.js in the current tab
-    const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-    chrome.scripting.executeScript({
-      target: { tabId: tab.id },
-      files: ["content.js"],
+document.addEventListener('DOMContentLoaded', function() {
+  const analyzeBtn = document.getElementById('analyzeBtn');
+  const loadingIndicator = document.getElementById('loadingIndicator');
+  const results = document.getElementById('results');
+  const analysisContent = document.getElementById('analysisContent');
+  
+  analyzeBtn.addEventListener('click', function() {
+    // Get the current tab's URL
+    chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+      const url = tabs[0].url;
+      
+      // Show loading indicator
+      loadingIndicator.classList.remove('hidden');
+      results.classList.add('hidden');
+      
+      // Send request to backend
+      fetch('http://localhost:8000/analyze-sustainability', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ pageURL: url })
+      })
+      .then(response => response.json())
+      .then(data => {
+        // Hide loading indicator
+        loadingIndicator.classList.add('hidden');
+        
+        // Display results
+        analysisContent.innerHTML = data.analysis.replace(/\n/g, '<br>');
+        results.classList.remove('hidden');
+      })
+      .catch(error => {
+        loadingIndicator.classList.add('hidden');
+        analysisContent.innerHTML = 'Error: ' + error.message;
+        results.classList.remove('hidden');
+      });
     });
   });
-  
-  chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
-    try {
-      console.log("message", JSON.stringify(message.URL.location.href));
-  
-      response = await fetch("http://localhost:5000/summarize", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          policyURL: message.URL.location.href,
-        }),
-      });
-      // console.log("Response from ChatGPT:", response.json());
-      document.getElementById("chatGptRes").innerText = (
-        await response.json()
-      ).summary;
-    } catch (error) {
-      console.error("Error:", error);
-    }
-  });
+});
