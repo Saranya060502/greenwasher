@@ -1,5 +1,7 @@
 :root {
   --primary-color: #2ecc71;
+  --score-yellow: #f1c40f;
+  --score-orange: #e67e22;
   --danger-color: #e74c3c;
   --background-color: #f8f9fa;
   --text-color: #2c3e50;
@@ -34,7 +36,7 @@ h1 {
   width: 150px;
   height: 150px;
   border-radius: 50%;
-  background: conic-gradient(var(--primary-color) 0%, var(--primary-color) calc(var(--score) * 1%), #ddd calc(var(--score) * 1%), #ddd 100%);
+  background: conic-gradient(var(--current-score-color, var(--primary-color)) 0%, var(--current-score-color, var(--primary-color)) calc(var(--score) * 1%), #ddd calc(var(--score) * 1%), #ddd 100%); /* Use dynamic color */
   margin: 20px auto;
   display: flex;
   align-items: center;
@@ -78,8 +80,14 @@ h1 {
 }
 
 .rating-score {
-  color: var(--primary-color);
+  color: var(--current-score-color, var(--primary-color));
 }
+
+/* Apply colors to rating items */
+.rating-item.score-green .rating-score { color: var(--primary-color); }
+.rating-item.score-yellow .rating-score { color: var(--score-yellow); }
+.rating-item.score-orange .rating-score { color: var(--score-orange); }
+.rating-item.score-red .rating-score { color: var(--danger-color); }
 
 .rating-bar {
   height: 10px;
@@ -90,10 +98,15 @@ h1 {
 
 .rating-progress {
   height: 100%;
-  background: var(--primary-color);
   width: 0;
-  transition: width 0.5s ease;
+  transition: width 0.5s ease, background-color 0.5s ease;
 }
+
+/* Apply colors to rating progress bars */
+.rating-item.score-green .rating-progress { background: var(--primary-color); }
+.rating-item.score-yellow .rating-progress { background: var(--score-yellow); }
+.rating-item.score-orange .rating-progress { background: var(--score-orange); }
+.rating-item.score-red .rating-progress { background: var(--danger-color); }
 
 .false-claims {
   margin: 20px 0;
@@ -156,4 +169,18 @@ h1 {
   text-align: center;
   margin: 20px 0;
   color: var(--text-color);
+}
+
+/* Score Color Classes */
+.score-green {
+  --current-score-color: var(--primary-color);
+}
+.score-yellow {
+  --current-score-color: var(--score-yellow);
+}
+.score-orange {
+  --current-score-color: var(--score-orange);
+}
+.score-red {
+  --current-score-color: var(--danger-color);
 }

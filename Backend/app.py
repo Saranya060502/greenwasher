@@ -116,7 +116,47 @@ def analyze_sustainability():
                                 ]
                             }
                             }
-
+                        Rating reported by cumulative rating should include the following -{
+                            "Key ESG Factors": {
+                            "Water Stewardship": {
+                            "Weight": "18%",
+                            "Description": "Evaluates company commitments to water conservation, recycling initiatives, and management of water-related risks in operations",
+                            "Best Practices": "CDP Water Security A-List reporting, water recycling systems, and conservation plans for water-stressed regions"
+                            },
+                            "Carbon Productivity": {
+                            "Weight": "22%",
+                            "Description": "Measures revenue generated per tonne of GHG emissions, with higher values indicating more efficient carbon management",
+                            "Benchmark": "$1,305,869 sales/tonne GHG for top performers vs. $640,248 industry average"
+                            },
+                            "Sustainable Revenue": {
+                            "Weight": "20%",
+                            "Description": "Percentage of total revenue derived from sustainable products and services",
+                            "Benchmark": "53% for leading companies vs. 15% industry average"
+                            },
+                            "Governance Structure": {
+                            "Weight": "15%",
+                            "Description": "Evaluates board diversity, ESG oversight mechanisms, and executive compensation alignment with sustainability goals",
+                            "Key Metrics": "Board gender diversity (36% benchmark), ESG-linked executive compensation"
+                            },
+                            "Independent Verification": {
+                            "Weight": "15%",
+                            "Description": "Assesses third-party validation of environmental claims and transparency in reporting",
+                            "Requirements": "Peer-reviewed validation for 30% of environmental claims, NGO/academic audit trails"
+                            },
+                            "Controversy Management": {
+                            "Weight": "10%",
+                            "Description": "Evaluates company response to ESG controversies and implementation of remediation measures",
+                            "Penalty System": "Up to 30% score reduction for verified greenwashing incidents or whistleblower cases"
+                            }
+                            },
+                            "Cumulative Score": "84/100",
+                            "Rating Interpretation": {
+                            "80-100": "Industry Leader - Comprehensive ESG integration across operations",
+                            "70-79": "Strong Performer - Robust systems with minor improvement areas",
+                            "60-69": "Average Performer - Basic compliance with some proactive measures",
+                            "Below 60": "Laggard - Significant ESG risks requiring immediate attention"
+                            }
+                            }
 
                         '''
         },
@@ -158,14 +198,16 @@ def analyze_sustainability():
                     "references"
                 ]
             }
+
+    
         }
         Example response:
         {
             "cumulative_score": 82,
             "ratings": {
-                "environmental": 85,
-                "data_privacy": 78,
-                "supply_chain": 91
+                "Water Stewardship": 85,
+                "Carbon Productivity": 78,
+                ...
             },
             "false_claims": "Zero-waste manufacturing claims from 2024 report",
             "references": [

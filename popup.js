@@ -3,12 +3,27 @@ document.addEventListener('DOMContentLoaded', function() {
   const loadingIndicator = document.getElementById('loadingIndicator');
   const results = document.getElementById('results');
 
+  function getScoreColorClass(score) {
+    if (score >= 85) return 'score-green';
+    if (score >= 70) return 'score-yellow';
+    if (score >= 65) return 'score-orange';
+    return 'score-red';
+  }
+
+
   function displayResults(data) {
-    // Set cumulative score
+    // Set cumulative score and color
     const scoreCircle = document.querySelector('.score-circle');
     const scoreValue = scoreCircle.querySelector('.score-value');
-    scoreCircle.style.setProperty('--score', data.cumulative_score);
-    scoreValue.textContent = data.cumulative_score;
+    const cumulativeScore = data.cumulative_score;
+    const cumulativeColorClass = getScoreColorClass(cumulativeScore);
+
+    scoreCircle.style.setProperty('--score', cumulativeScore);
+    scoreValue.textContent = cumulativeScore;
+    // Remove old color classes and add the new one
+    scoreCircle.classList.remove('score-green', 'score-yellow', 'score-orange', 'score-red');
+    scoreCircle.classList.add(cumulativeColorClass);
+
 
     // Display ratings
     const ratingsContent = document.getElementById('ratingsContent');
@@ -16,16 +31,23 @@ document.addEventListener('DOMContentLoaded', function() {
     
     data.ratings.forEach(rating => {
       const ratingElement = document.createElement('div');
-      ratingElement.className = 'rating-item';
+      const ratingScore = rating.score;
+      const ratingColorClass = getScoreColorClass(ratingScore);
+
+      ratingElement.className = `rating-item ${ratingColorClass}`; // Add color class to the item
       ratingElement.innerHTML = `
         <div class="rating-header">
           <span class="rating-name">${rating["Rating Name"]}</span>
-          <span class="rating-score">${rating.score}%</span>
+          <span class="rating-score">${ratingScore}%</span>
         </div>
         <div class="rating-bar">
-          <div class="rating-progress" style="width: ${rating.score}%"></div>
+          <div class="rating-progress" style="width: ${ratingScore}%"></div>
         </div>
       `;
+      // Apply the color variable directly to the progress bar for immediate effect
+      const progressBar = ratingElement.querySelector('.rating-progress');
+      progressBar.style.setProperty('--current-score-color', `var(--${ratingColorClass.replace('score-','')}-color, var(--primary-color))`);
+
       ratingsContent.appendChild(ratingElement);
     });
 
