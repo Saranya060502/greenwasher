@@ -30,9 +30,9 @@ def analyze_sustainability():
     if not url:
         return jsonify({"error": "URL cannot be empty."}), 400
     
-    page_text = extract_carbon_claims(url)
-    if not page_text:
-        return jsonify({"error": "Failed to extract claims from the website."}), 400
+    # page_text = extract_carbon_claims(url)
+    # if not page_text:
+    #     return jsonify({"error": "Failed to extract claims from the website."}), 400
     
     # First message to extract claims
     extract_claims_messages = [
